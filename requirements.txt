@@ -5,3 +5,5 @@ openai
 python-dotenv
 schedule
 requests
+instaloader
+yt-dlp

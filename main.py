@@ -7,6 +7,7 @@ import config
 from utils import scan_videos, extract_keyword, log_upload, move_to_posted, is_processed, get_video_duration, check_scheduling_status
 from metadata_generator import MetadataGenerator
 from uploader import YouTubeUploader
+from instagram_sync import InstagramSync
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,14 @@ def process_videos():
     """Main process to scan, generate metadata, and upload."""
     logger.info("Starting video processing session...")
     
+    # 0. Sync from Instagram
+    try:
+        if config.INSTAGRAM_PROFILE:
+            sync = InstagramSync()
+            sync.sync_reels(config.INPUT_DIR)
+    except Exception as e:
+        logger.error(f"Instagram sync failed: {e}")
+
     videos = scan_videos(config.INPUT_DIR)
     if not videos:
         logger.info("No new videos found in input directory.")
