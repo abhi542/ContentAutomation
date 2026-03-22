@@ -1,75 +1,65 @@
-# ReelsToShorts 🚀
+# ⚡ ContentAutomation | PRO-ADMIN EDITION
 
-A production-ready Python automation system that syncs Instagram Reels to YouTube Shorts using AI for viral, high-CTR metadata.
+**The ultimate command center for YouTube Shorts automation. Sync, monitor, and scale your channel with AI-driven precision.**
 
-## 🎯 Features
-- **Instagram Auto-Sync**: Detects and downloads new Reels from any profile.
-- **Viral AI Metadata**: Uses 2025-2026 growth strategies to generate curiositiy-driven, high-CTR titles (LLM Powered).
-- **Smart Scheduling**: Implements 6-hour gaps and daily post limits to avoid audience saturation.
-- **YouTube Shorts API**: Handles secure OAuth2 authentication and resumable uploads.
-- **Success Logs**: Generates a JSON history with clickable YouTube links for every post.
+![Pro-Admin Dashboard Preview](file:///Users/abhinavbhatt/.gemini/antigravity/brain/238f0245-aad4-4dcd-b534-74677ae6a67d/pro_admin_dashboard_final_v2_2_1774170033904.png)
+
+## 💎 The Pro-Admin Advantage
+Transform your content pipeline into a professional media house. **ContentAutomation** doesn't just upload videos; it provides real-time business intelligence for your YouTube growth.
+
+### 📊 Advanced Analytics & Monitoring
+- **Monetization Tracker**: Live progress bars for **1,000 Subscribers** and **10M Shorts Views** (90-day window).
+- **Latest Performance Hub**: High-density 3-way split showing **Views | Likes | Comments** for your most recent post.
+- **Queue Intelligence**: Dynamic **Coverage** calculation—know exactly how many days of automated content you have left.
+- **Channel Identity**: Real-time sync with your YouTube profile (Avatar, Title, Subscribers).
+
+### 🚀 Automation Features
+- **Instagram-to-Shorts Sync**: Zero-friction downloading and uploading from any Instagram profile.
+- **Viral AI Metadata**: 2026-ready, high-CTR hooks and titles generated automatically via LLM.
+- **Smart Pacing Engine**: Intelligent 6-hour gaps and daily limits to keep your account safe and relevant.
+- **Manual Override**: The "Post Next Reel Now" button gives you instant control, bypassing all scheduling restrictions.
 
 ---
 
-## 📁 System Structure
-- `input_videos/`: Target folder for new content.
-- `posted/`: Archive for successfully uploaded videos.
-- `logs/`: Check `uploads.json` for activity history.
-- `instagram_sync.py`: Handles Reels detection and download.
-- `metadata_generator.py`: Generates the hooks and titles.
+## 🛠️ Technical Stack
+- **Backend**: FastAPI (Python) with Uvicorn for asynchronous performance.
+- **Frontend**: Vanilla HTML5/CSS3/JS with a premium, low-latency "Glassmorphism" UI.
+- **APIs**: YouTube Data API v3, Groq/OpenAI (AI Metadata), Instaloader.
+- **Security**: OAuth2 token management with local `token.pickle` encryption.
 
 ---
 
-## 🛠 Setup & Installation
+## 🚀 Quick Start
 
-### 1. Install Dependencies
+### 1. Environment Setup
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Configure Environment (`.env`)
-Create a `.env` file in the root directory:
+### 2. Configuration (`.env`)
 ```env
-GROQ_API_KEY=your_key_here
-INSTAGRAM_USER=your_username
-INSTAGRAM_PROFILE=target_username
-POSTING_GAP_HOURS=6
+GROQ_API_KEY=your_key
+INSTAGRAM_PROFILE=target_profile
 MAX_POSTS_PER_DAY=3
+POSTING_GAP_HOURS=6
 ```
 
-### 3. Google Cloud Setup (YouTube API)
-1. Go to [Google Cloud Console](https://console.cloud.google.com/).
-2. Enable **YouTube Data API v3**.
-3. Create **OAuth 2.0 Client ID** (Desktop App).
-4. Download the JSON and save it as `client_secrets.json` in the project root.
-5. Add your email as a **Test User** in the OAuth Consent Screen.
-
-### 4. Authorize Instagram
-To avoid 403 blocks, perform a one-time login:
+### 3. Launch the Dashboard
 ```bash
-instaloader --login YOUR_USERNAME
+python app.py
 ```
+Visit `http://localhost:8000` to access your Pro-Admin Command Center.
 
 ---
 
-## 🚀 Running the Automation
-
-### Continuous Watch Mode (Recommended)
-Automatically syncs Reels and uploads them to YouTube every 12 hours:
-```bash
-python main.py --watch
-```
-
-### Manual Trigger
-Run a sync and upload session immediately:
-```bash
-python main.py --run
-```
+## 💡 System Architecture
+- `app.py`: High-performance FastAPI dashboard engine.
+- `uploader.py`: Robust YouTube integration with 90-day views aggregator.
+- `main.py`: The core automation logic and scheduling heartbeat.
+- `static/`: Modern, premium-styled dashboard assets.
 
 ---
 
-## 💡 Important Notes
-- **Instagram Blocks**: If you see "401 Unauthorized" or "Please wait," Instagram has rate-limited you. Wait 12-24 hours before retrying.
-- **Metadata**: AI generates metadata based on the video filename. Ensure your files or Reels have descriptive names.
+**Built for creators who take automation seriously. Welcome to the Pro-Admin era.** 🎯🔥✨
