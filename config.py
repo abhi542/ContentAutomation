@@ -25,3 +25,7 @@ CLIENT_SECRETS_FILE = os.getenv("CLIENT_SECRETS_FILE", "client_secrets.json")
 YOUTUBE_SCOPE = ["https://www.googleapis.com/auth/youtube.upload"]
 CATEGORY_ID = 22 # People & Blogs
 PRIVACY_STATUS = "public"
+
+# Smart Scheduling (2025-2026 Trends)
+POSTING_GAP_HOURS = int(os.getenv("POSTING_GAP_HOURS", 6))
+MAX_POSTS_PER_DAY = int(os.getenv("MAX_POSTS_PER_DAY", 3))

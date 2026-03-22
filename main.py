@@ -4,7 +4,7 @@ import schedule
 import logging
 from pathlib import Path
 import config
-from utils import scan_videos, extract_keyword, log_upload, move_to_posted, is_processed
+from utils import scan_videos, extract_keyword, log_upload, move_to_posted, is_processed, get_video_duration, check_scheduling_status
 from metadata_generator import MetadataGenerator
 from uploader import YouTubeUploader
 
@@ -19,6 +19,12 @@ def process_videos():
         logger.info("No new videos found in input directory.")
         return
 
+    # Check Scheduling Status
+    can_post, reason = check_scheduling_status()
+    if not can_post:
+        logger.info(f"Skipping session: {reason}")
+        return
+
     # Initialize components
     try:
         metadata_gen = MetadataGenerator()
@@ -27,15 +33,19 @@ def process_videos():
         logger.error(f"Failed to initialize components: {e}")
         return
 
+    posted_this_session = False
+
     for video_path in videos:
+        # Only post ONE per session in watch mode to respect gaps
+        if posted_this_session:
+            break
+
         filename = video_path.name
         
         if is_processed(filename):
             logger.info(f"Skipping already processed video: {filename}")
             continue
 
-        logger.info(f"Processing: {filename}")
-        
         # 1. Extract Keyword
         keyword = extract_keyword(filename)
         
@@ -75,6 +85,7 @@ def process_videos():
             })
             move_to_posted(video_path)
             logger.info(f"Successfully posted {filename} (ID: {video_id})")
+            posted_this_session = True # Respect gap after one post
         else:
             log_upload({
                 "filename": filename,

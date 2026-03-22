@@ -24,30 +24,109 @@ class MetadataGenerator:
     def generate(self, keyword: str) -> Dict:
         """Generate high-CTR metadata based on a keyword."""
         prompt = f"""
-        You are a YouTube Shorts growth expert. Generate viral metadata for a video about: "{keyword}"
-        
-        CRITICAL RULES FOR TITLES:
-        Choose the BEST format from these options:
-        1. Question: "Why can’t you stay consistent?"
-        2. Bold statement: "Discipline is the real cheat code"
-        3. Curiosity gap: "This is why you keep failing"
-        4. Emotional trigger: "You’re wasting your potential"
-        5. Contrarian: "Motivation is a lie"
+        You are a top 0.1% YouTube Shorts strategist who specializes in creating viral content that maximizes CTR, watch time, shares, and saves.
 
-        REQUIREMENTS:
-        - Max 100 characters for titles.
-        - Must include "#shorts".
-        - Generate 3-5 variations and select the one with the HIGHEST CTR potential.
-        - Description: 1-2 lines reinforcing curiosity/emotion + 2-4 hashtags.
-        - Tags: 5-10 relevant keywords.
+        Your goal is to generate HIGH-PERFORMANCE metadata for a Short based on this topic:
+        "{keyword}"
 
-        OUTPUT FORMAT (JSON ONLY):
+        ---
+
+        ## 🧠 THINK LIKE A VIRAL CREATOR
+
+        Before generating, internally optimize for:
+        - Curiosity gap (viewer MUST feel compelled to click)
+        - Emotional trigger (fear, ambition, insecurity, urgency)
+        - Relatability (use "you" whenever possible)
+        - Pattern interrupt (must stand out in feed)
+        - Retention (title should match a strong hook)
+
+        ---
+
+        ## 🎯 TITLE GENERATION
+
+        Generate 5 different title options using DIFFERENT styles:
+
+        1. Question (curiosity-driven)
+        2. Bold statement (authoritative)
+        3. Curiosity gap (incomplete info)
+        4. Emotional/pain trigger
+        5. Contrarian/unexpected
+
+        ---
+
+        ## 🔥 TITLE RULES (STRICT)
+
+        - Max 90 characters (shorter = better CTR)
+        - MUST include "#shorts"
+        - Must feel human, not robotic
+        - Avoid generic phrases like "Did you know"
+        - Avoid weak words like "tips", "things", "ways"
+        - Each title must feel like a HOOK, not a description
+
+        ---
+
+        ## 🧪 SELECTION LOGIC
+
+        From the 5 generated titles:
+        - Pick the ONE with highest viral potential based on:
+          - curiosity
+          - emotional impact
+          - relatability
+          - scroll-stopping power
+
+        ---
+
+        ## 📝 DESCRIPTION RULES
+
+        - 1–2 lines MAX
+        - Reinforce curiosity or emotion
+        - DO NOT explain everything (leave open loop)
+        - Add 2–4 strong hashtags (not generic spam)
+
+        ---
+
+        ## 🏷️ TAGS RULES
+
+        - 5–10 tags
+        - Mix of:
+          - niche keywords
+          - broad viral tags
+        - Keep them short and relevant
+
+        ---
+
+        ## ⚠️ OUTPUT FORMAT (STRICT JSON ONLY)
+
+        Return ONLY valid JSON. No extra text.
+
         {{
+            "title_options": [
+                "...",
+                "...",
+                "...",
+                "...",
+                "..."
+            ],
             "best_title": "...",
             "description": "...",
-            "tags": ["tag1", "tag2", ...],
-            "reasoning": "Why this title was chosen for high CTR"
+            "tags": ["...", "..."],
+            "reasoning": "Explain why this title will perform best (CTR + retention psychology)"
         }}
+
+        ---
+
+        ## 🚀 EXAMPLE (REFERENCE STYLE)
+
+        Input: "why you cant focus"
+
+        Example Output Style:
+        - "Why can’t you focus for 10 minutes? #shorts"
+        - "Your focus is being destroyed (here’s why) #shorts"
+        - "This is why you’re always distracted #shorts"
+
+        ---
+
+        Now generate the best possible metadata.
         """
 
         try:
@@ -62,7 +141,15 @@ class MetadataGenerator:
             
             content = response.choices[0].message.content
             metadata = json.loads(content)
-            logger.info(f"Generated metadata for '{keyword}': {metadata['best_title']}")
+            
+            best_title = metadata.get("best_title", f"{keyword.title()} #shorts")
+            options = metadata.get("title_options", [])
+            
+            logger.info(f"Generated {len(options)} title options for '{keyword}'.")
+            for i, opt in enumerate(options, 1):
+                logger.info(f"Option {i}: {opt}")
+                
+            logger.info(f"Selected Best Title: {best_title}")
             return metadata
         except Exception as e:
             logger.error(f"Metadata generation failed for {keyword}: {e}")
