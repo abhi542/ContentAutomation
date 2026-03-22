@@ -47,11 +47,26 @@ MAX_POSTS_PER_DAY=3
 POSTING_GAP_HOURS=6
 ```
 
-### 3. Launch the Dashboard
+### 3. Authentication (One-time)
+```bash
+# Authorize Instagram Sync
+instaloader --login YOUR_USERNAME
+
+# Authorize YouTube API
+python app.py  # Follow the browser prompt
+```
+
+### 4. Running the System
+**Step 1: Start the Dashboard (UI + Metrics)**
 ```bash
 python app.py
 ```
-Visit `http://localhost:8000` to access your Pro-Admin Command Center.
+*Visit `http://localhost:8000` to access your Pro-Admin Command Center.*
+
+**Step 2: Start the Automation Engine (New Terminal)**
+```bash
+python main.py --watch
+```
 
 ---
 
@@ -63,4 +78,4 @@ Visit `http://localhost:8000` to access your Pro-Admin Command Center.
 
 ---
 
-**Built for creators who take automation seriously. Welcome to the Pro-Admin era.** 
+**Built for creators who take automation seriously. Welcome to the Pro-Admin era.** 🎯🔥✨
