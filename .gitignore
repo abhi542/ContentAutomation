@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Project specific
+reels/
+input_videos/
+posted/
+logs/
+token.pickle
+client_secrets.json
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
