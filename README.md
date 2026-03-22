@@ -48,6 +48,3 @@ python main.py --run
 ```bash
 python main.py --watch
 ```
-
-## 📜 License
-MIT
