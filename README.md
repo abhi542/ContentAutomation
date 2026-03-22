@@ -1,8 +1,9 @@
-# ⚡ ContentAutomation | PRO-ADMIN EDITION
+# ⚡ ContentAutomation 
 
 **The ultimate command center for YouTube Shorts automation. Sync, monitor, and scale your channel with AI-driven precision.**
 
-![Pro-Admin Dashboard Preview](file:///Users/abhinavbhatt/.gemini/antigravity/brain/238f0245-aad4-4dcd-b534-74677ae6a67d/pro_admin_dashboard_final_v2_2_1774170033904.png)
+![Pro-Admin Dashboard Preview](<img width="2802" height="1594" alt="image" src="https://github.com/user-attachments/assets/c0ec7f3c-1ce7-4b21-ae37-9419098e476f" />
+)
 
 ## 💎 The Pro-Admin Advantage
 Transform your content pipeline into a professional media house. **ContentAutomation** doesn't just upload videos; it provides real-time business intelligence for your YouTube growth.
