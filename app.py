@@ -54,21 +54,21 @@ async def get_stats():
 
     # Extract dynamic countdown if present in reason
     next_post_time_str = "00:00:00"
+    wait_seconds = 0
+    
     if "Next post allowed in" in reason:
         import re
         match = re.search(r"(\d+):(\d+):(\d+)", reason)
         if match:
-            h, m, s = match.groups()
-            next_post_time_str = f"{int(h):02d}:{int(m):02d}:{int(s):02d}"
+            h, m, s = [int(x) for x in match.groups()]
+            next_post_time_str = f"{h:02d}:{m:02d}:{s:02d}"
+            wait_seconds = h * 3600 + m * 60 + s
     elif "limit" in reason.lower():
-        # If daily limit reached, timer should show time until next window (e.g. roughly 12-24h)
-        # For simplicity, we'll just indicate "Limit"
         next_post_time_str = "LIMIT"
-    
-    # Calculate more metrics
-    total_views = 0
-    if live_stats:
-        total_views = int(live_stats.get("viewCount", 0))
+        wait_seconds = -1
+    elif can_post:
+        next_post_time_str = "READY"
+        wait_seconds = 0
 
     return {
         "videos_queued": total_reels,
@@ -78,29 +78,18 @@ async def get_stats():
         "can_post_now": can_post,
         "scheduling_reason": reason,
         "next_post_timer": next_post_time_str,
+        "wait_seconds": wait_seconds,
         "metrics": {
             "total_views": channel_stats.get("total_views", 0) if channel_stats else 0,
+            "shorts_views_90d": uploader.get_shorts_views_90d() if channel_stats else 0,
             "subscribers": channel_stats.get("subscribers", 0) if channel_stats else 0,
             "video_count": channel_stats.get("video_count", 0) if channel_stats else 0,
             "total_likes": int(live_stats.get("likeCount", 0)) if live_stats else 0,
+            "total_comments": int(live_stats.get("commentCount", 0)) if live_stats else 0,
             "success_rate": "100%",
             "account_status": "Healthy"
         },
         "channel": channel_stats,
-        "config": {
-            "gap_hours": config.POSTING_GAP_HOURS,
-            "max_daily": config.MAX_POSTS_PER_DAY
-        }
-    }
-
-    return {
-        "videos_queued": total_reels,
-        "total_posted": len(success_logs),
-        "last_post": last_post,
-        "live_stats": live_stats,
-        "can_post_now": can_post,
-        "scheduling_reason": reason,
-        "next_post_timer": next_post_time_str,
         "config": {
             "gap_hours": config.POSTING_GAP_HOURS,
             "max_daily": config.MAX_POSTS_PER_DAY

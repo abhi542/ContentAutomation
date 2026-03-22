@@ -84,22 +84,65 @@ class YouTubeUploader:
                 mine=True
             )
             response = request.execute()
+            logger.info(f"Raw Channel Stats Response: {response}")
             
             if not response.get("items"):
+                logger.warning("No channel items found in API response.")
                 return None
             
             item = response["items"][0]
             stats = item["statistics"]
-            return {
+            res = {
                 "subscribers": int(stats.get("subscriberCount", 0)),
                 "total_views": int(stats.get("viewCount", 0)),
                 "video_count": int(stats.get("videoCount", 0)),
                 "title": item["snippet"].get("title"),
                 "thumbnail": item["snippet"].get("thumbnails", {}).get("default", {}).get("url")
             }
+            logger.info(f"Processed Channel Stats: {res}")
+            return res
         except Exception as e:
             logger.error(f"Error fetching channel stats: {e}")
             return None
+
+    def get_shorts_views_90d(self):
+        """Aggregate views for all videos posted in the last 90 days using activities.list."""
+        try:
+            from datetime import datetime, timedelta, timezone
+            since_90d = (datetime.now(timezone.utc) - timedelta(days=90))
+            
+            # 1. List activities (upload events)
+            request = self.youtube.activities().list(
+                part="snippet,contentDetails",
+                mine=True,
+                maxResults=50
+            )
+            response = request.execute()
+            
+            video_ids = []
+            for item in response.get("items", []):
+                if item["snippet"]["type"] == "upload":
+                    pub_at = datetime.fromisoformat(item["snippet"]["publishedAt"].replace('Z', '+00:00'))
+                    if pub_at > since_90d:
+                        v_id = item["contentDetails"]["upload"].get("videoId")
+                        if v_id:
+                            video_ids.append(v_id)
+            
+            if not video_ids:
+                return 0
+            
+            # 2. Get stats for these videos
+            stats_request = self.youtube.videos().list(
+                part="statistics",
+                id=",".join(video_ids[:50]) # API limit
+            )
+            stats_response = stats_request.execute()
+            
+            total_views = sum(int(item["statistics"].get("viewCount", 0)) for item in stats_response.get("items", []))
+            return total_views
+        except Exception as e:
+            logger.error(f"Error calculating 90d views via activities: {e}")
+            return 0
 
     def get_video_stats(self, video_id):
         """Fetch statistics (views, etc.) for a specific video ID."""
@@ -109,18 +152,22 @@ class YouTubeUploader:
                 id=video_id
             )
             response = request.execute()
+            logger.info(f"Raw Video Stats Response for {video_id}: {response}")
             
             if not response.get("items"):
+                logger.warning(f"No video items found for ID: {video_id}")
                 return None
             
             item = response["items"][0]
-            return {
+            res = {
                 "viewCount": item["statistics"].get("viewCount", "0"),
                 "likeCount": item["statistics"].get("likeCount", "0"),
                 "commentCount": item["statistics"].get("commentCount", "0"),
                 "title": item["snippet"].get("title"),
                 "publishedAt": item["snippet"].get("publishedAt")
             }
+            logger.info(f"Processed Video Stats: {res}")
+            return res
         except Exception as e:
             logger.error(f"Error fetching stats for video {video_id}: {e}")
             return None
