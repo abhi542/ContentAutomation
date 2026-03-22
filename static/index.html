@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentAutomation Dashboard</title>
+    <link rel="stylesheet" href="static/style.css?v=1.0.1">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i data-lucide="zap" class="icon-zap"></i>
+                <h1>Content<span>Automation</span></h1>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i data-lucide="video"></i></div>
+                <div class="stat-info">
+                    <h3 id="videos-queued">0</h3>
+                    <p>Reels in Queue</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i data-lucide="check-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="total-posted">0</h3>
+                    <p>Videos Posted</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #6366f1"><i data-lucide="calendar"></i></div>
+                <div class="stat-info">
+                    <h3 id="days-remaining">0</h3>
+                    <p>Coverage (Days)</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #ec4899"><i data-lucide="heart"></i></div>
+                <div class="stat-info">
+                    <h3 id="total-likes">0</h3>
+                    <p>Latest Likes</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #10b981"><i data-lucide="eye"></i></div>
+                <div class="stat-info">
+                    <h3 id="total-views">0</h3>
+                    <p>Channel Views</p>
+                </div>
+            </div>
+        </section>
+
+        <main class="main-content">
+            <div class="primary-section">
+                <div class="action-card glass">
+                    <div class="action-header">
+                        <div class="title-with-status">
+                            <h2>System Control</h2>
+                            <div class="status-indicator" id="status-badge">
+                                <span class="dot" id="status-dot"></span>
+                                <span id="status-text">Checking...</span>
+                            </div>
+                        </div>
+                        <div id="countdown-display" class="timer-container">
+                            <span class="timer-label">Next Auto-Post In:</span>
+                            <span id="timer-clock">00:00:00</span>
+                        </div>
+                        <p class="bypass-note">⚠️ Note: Clicking the button below will bypass the gap.</p>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="trigger-btn" class="btn-primary ripple">
+                            <i data-lucide="play"></i>
+                            Post Next Reel Now
+                        </button>
+                    </div>
+                </div>
+
+                <div class="logs-card glass">
+                    <h2>Recent Uploads</h2>
+                    <div id="logs-container" class="logs-list">
+                        <!-- Logs will appear here -->
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="sidebar">
+                <div class="card glass settings-summary">
+                    <h2>Strategy</h2>
+                    <div class="setting-item">
+                        <span>Daily Limit</span>
+                        <span id="setting-limit">3 Posts</span>
+                    </div>
+                    <div class="setting-item">
+                        <span>Pacing Gap</span>
+                        <span id="setting-gap">6 Hours</span>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="static/script.js?v=1.0.1"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

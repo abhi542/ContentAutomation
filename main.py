@@ -11,7 +11,7 @@ from instagram_sync import InstagramSync
 
 logger = logging.getLogger(__name__)
 
-def process_videos():
+def process_videos(force=False):
     """Main process to scan, generate metadata, and upload."""
     logger.info("Starting video processing session...")
     
@@ -28,11 +28,14 @@ def process_videos():
         logger.info("No new videos found in input directory.")
         return
 
-    # Check Scheduling Status
-    can_post, reason = check_scheduling_status()
-    if not can_post:
-        logger.info(f"Skipping session: {reason}")
-        return
+    # Check Scheduling Status (Skip if forced)
+    if not force:
+        can_post, reason = check_scheduling_status()
+        if not can_post:
+            logger.info(f"Skipping session: {reason}")
+            return
+    else:
+        logger.info("Force trigger: Skipping scheduling gap check.")
 
     # Initialize components
     try:
@@ -112,9 +115,9 @@ def main():
     if args.run:
         process_videos()
     elif args.watch:
-        logger.info("Automation started. Watching every 12 hours...")
+        logger.info(f"Automation started. Watching every 1 hour (Gap: {config.POSTING_GAP_HOURS}h, Limit: {config.MAX_POSTS_PER_DAY}/day)")
         process_videos() # Run once immediately
-        schedule.every(12).hours.do(process_videos)
+        schedule.every(1).hours.do(process_videos)
         
         while True:
             schedule.run_pending()

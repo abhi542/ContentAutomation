@@ -75,3 +75,52 @@ class YouTubeUploader:
 
         logger.info(f"Upload complete! Video ID: {response.get('id')}")
         return response.get("id")
+
+    def get_channel_stats(self):
+        """Fetch overall channel statistics (subscribers, total views)."""
+        try:
+            request = self.youtube.channels().list(
+                part="statistics,snippet",
+                mine=True
+            )
+            response = request.execute()
+            
+            if not response.get("items"):
+                return None
+            
+            item = response["items"][0]
+            stats = item["statistics"]
+            return {
+                "subscribers": int(stats.get("subscriberCount", 0)),
+                "total_views": int(stats.get("viewCount", 0)),
+                "video_count": int(stats.get("videoCount", 0)),
+                "title": item["snippet"].get("title"),
+                "thumbnail": item["snippet"].get("thumbnails", {}).get("default", {}).get("url")
+            }
+        except Exception as e:
+            logger.error(f"Error fetching channel stats: {e}")
+            return None
+
+    def get_video_stats(self, video_id):
+        """Fetch statistics (views, etc.) for a specific video ID."""
+        try:
+            request = self.youtube.videos().list(
+                part="statistics,snippet",
+                id=video_id
+            )
+            response = request.execute()
+            
+            if not response.get("items"):
+                return None
+            
+            item = response["items"][0]
+            return {
+                "viewCount": item["statistics"].get("viewCount", "0"),
+                "likeCount": item["statistics"].get("likeCount", "0"),
+                "commentCount": item["statistics"].get("commentCount", "0"),
+                "title": item["snippet"].get("title"),
+                "publishedAt": item["snippet"].get("publishedAt")
+            }
+        except Exception as e:
+            logger.error(f"Error fetching stats for video {video_id}: {e}")
+            return None

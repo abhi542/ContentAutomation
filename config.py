@@ -22,7 +22,10 @@ AI_MODEL = os.getenv("AI_MODEL", "gpt-4o") # or "llama3-70b-8192" for Groq
 
 # YouTube Settings
 CLIENT_SECRETS_FILE = os.getenv("CLIENT_SECRETS_FILE", "client_secrets.json")
-YOUTUBE_SCOPE = ["https://www.googleapis.com/auth/youtube.upload"]
+YOUTUBE_SCOPE = [
+    "https://www.googleapis.com/auth/youtube.upload",
+    "https://www.googleapis.com/auth/youtube.readonly"
+]
 CATEGORY_ID = 22 # People & Blogs
 PRIVACY_STATUS = "public"
 
